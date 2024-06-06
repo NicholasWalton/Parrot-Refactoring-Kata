@@ -1,11 +1,9 @@
 from abc import ABC, abstractmethod
-from enum import Enum
 
 
 class Parrot(ABC):
 
-    def __init__(self, number_of_coconuts, voltage, nailed):
-        self._number_of_coconuts = number_of_coconuts
+    def __init__(self, voltage, nailed):
         self._voltage = voltage
         self._nailed = nailed
 
@@ -15,16 +13,14 @@ class Parrot(ABC):
     @abstractmethod
     def cry(self): pass
 
-    def _load_factor(self):
-        return 9.0
-
     def _base_speed(self):
         return 12.0
 
 
 class African(Parrot):
     def __init__(self, number_of_coconuts, voltage, nailed):
-        super().__init__(number_of_coconuts, voltage, nailed)
+        super().__init__(voltage, nailed)
+        self._number_of_coconuts = number_of_coconuts
 
     def speed(self):
         return max(0, self._base_speed() - self._load_factor() * self._number_of_coconuts)
@@ -32,18 +28,21 @@ class African(Parrot):
     def cry(self):
         return "Sqaark!"
 
+    def _load_factor(self):
+        return 9.0
+
 
 class European(Parrot):
-    def __init__(self, number_of_coconuts, voltage, nailed):
-        super().__init__(number_of_coconuts, voltage, nailed)
+    def __init__(self, voltage, nailed):
+        super().__init__(voltage, nailed)
 
     def cry(self):
         return "Sqoork!"
 
 
 class NorwegianBlue(Parrot):
-    def __init__(self, number_of_coconuts, voltage, nailed):
-        super().__init__(number_of_coconuts, voltage, nailed)
+    def __init__(self, voltage, nailed):
+        super().__init__(voltage, nailed)
 
     def cry(self):
         return "Bzzzzzz" if self._voltage > 0 else "..."
