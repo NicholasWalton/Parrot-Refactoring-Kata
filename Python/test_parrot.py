@@ -2,32 +2,32 @@ from parrot import African, European, NorwegianBlue
 
 
 def test_speed_of_european_parrot():
-    parrot = European(0, False)
+    parrot = European()
     assert parrot.speed() == 12.0
 
 
 def test_cry_of_european_parrot():
-    parrot = European(0, False)
+    parrot = European()
     assert parrot.cry() == "Sqoork!"
 
 
 def test_speed_of_african_parrot_with_one_coconut():
-    parrot = African(1, 0, False)
+    parrot = African(1)
     assert parrot.speed() == 3.0
 
 
 def test_cry_of_african_parrot():
-    parrot = African(1, 0, False)
+    parrot = African(1)
     assert parrot.cry() == "Sqaark!"
 
 
 def test_speed_of_african_parrot_with_two_coconuts():
-    parrot = African(2, 0, False)
+    parrot = African(2)
     assert parrot.speed() == 0.0
 
 
 def test_speed_of_african_parrot_with_no_coconuts():
-    parrot = African(0, 0, False)
+    parrot = African(0)
     assert parrot.speed() == 12.0
 
 
