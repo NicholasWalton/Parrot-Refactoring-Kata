@@ -46,3 +46,8 @@ class Parrot:
 class African(Parrot):
     def __init__(self, number_of_coconuts, voltage, nailed):
         super().__init__(ParrotType.AFRICAN, number_of_coconuts, voltage, nailed)
+
+
+class European(Parrot): 
+    def __init__(self, number_of_coconuts, voltage, nailed):
+        super().__init__(ParrotType.EUROPEAN, number_of_coconuts, voltage, nailed)

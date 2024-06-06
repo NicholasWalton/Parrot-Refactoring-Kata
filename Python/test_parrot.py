@@ -1,13 +1,13 @@
-from parrot import African, Parrot, ParrotType
+from parrot import African, European, Parrot, ParrotType
 
 
 def test_speed_of_european_parrot():
-    parrot = Parrot(ParrotType.EUROPEAN, 0, 0, False)
+    parrot = European(0, 0, False)
     assert parrot.speed() == 12.0
 
 
 def test_cry_of_european_parrot():
-    parrot = Parrot(ParrotType.EUROPEAN, 0, 0, False)
+    parrot = European(0, 0, False)
     assert parrot.cry() == "Sqoork!"
 
 
