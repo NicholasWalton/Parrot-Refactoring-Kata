@@ -10,6 +10,8 @@
     ],
     "sonarlint.testFilePattern": "test_*.py",
     "cSpell.words": [
+        "Bzzzzzz",
+        "Sqaark",
         "Sqoork"
     ],
     "sonarlint.analysisExcludesStandalone": "test_*.py"
