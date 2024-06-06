@@ -15,11 +15,7 @@ class Parrot:
         self._nailed = nailed
 
     def speed(self):
-        match self._type:
-            case ParrotType.EUROPEAN:
-                return self._base_speed()
-            case ParrotType.AFRICAN:
-                return max(0, self._base_speed() - self._load_factor() * self._number_of_coconuts)
+        return self._base_speed()
 
     def cry(self):
         match self._type:
@@ -41,6 +37,9 @@ class Parrot:
 class African(Parrot):
     def __init__(self, number_of_coconuts, voltage, nailed):
         super().__init__(ParrotType.AFRICAN, number_of_coconuts, voltage, nailed)
+
+    def speed(self):
+        return max(0, self._base_speed() - self._load_factor() * self._number_of_coconuts)
 
 
 class European(Parrot): 
