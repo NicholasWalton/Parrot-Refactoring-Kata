@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 
 
 class Parrot(ABC):
-
     def speed(self):
         return self._base_speed()
 
@@ -35,15 +34,17 @@ class European(Parrot):
 
 
 class NorwegianBlue(Parrot):
-    def __init__(self, voltage, nailed):
+    def __init__(self, voltage):
         self._voltage = voltage
-        self._nailed = nailed
+
+    def speed(self):
+        return min([24.0, self._voltage * self._base_speed()])
 
     def cry(self):
         return "Bzzzzzz" if self._voltage > 0 else "..."
 
-    def speed(self):
-        return 0 if self._nailed else self._compute_base_speed_for_voltage()
 
-    def _compute_base_speed_for_voltage(self):
-        return min([24.0, self._voltage * self._base_speed()])
+class Nailed(NorwegianBlue):
+
+    def speed(self):
+        return 0
