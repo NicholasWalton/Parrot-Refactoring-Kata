@@ -1,4 +1,4 @@
-from parrot import African, European, Parrot, ParrotType
+from parrot import African, European, NorwegianBlue
 
 
 def test_speed_of_european_parrot():
@@ -32,25 +32,25 @@ def test_speed_of_african_parrot_with_no_coconuts():
 
 
 def test_speed_norwegian_blue_parrot_nailed():
-    parrot = Parrot(ParrotType.NORWEGIAN_BLUE, 0, 1.5, True)
+    parrot = NorwegianBlue(0, 1.5, True)
     assert parrot.speed() == 0.0
 
 
 def test_speed_norwegian_blue_parrot_not_nailed():
-    parrot = Parrot(ParrotType.NORWEGIAN_BLUE, 0, 1.5, False)
+    parrot = NorwegianBlue(0, 1.5, False)
     assert parrot.speed() == 18.0
 
 
 def test_speed_norwegian_blue_parrot_not_nailed_high_voltage():
-    parrot = Parrot(ParrotType.NORWEGIAN_BLUE, 0, 4, False)
+    parrot = NorwegianBlue(0, 4, False)
     assert parrot.speed() == 24.0
 
 
 def test_cry_norwegian_blue_parrot_high_voltage():
-    parrot = Parrot(ParrotType.NORWEGIAN_BLUE, 0, 4, False)
+    parrot = NorwegianBlue(0, 4, False)
     assert parrot.cry() == "Bzzzzzz"
 
 
 def test_cry_norwegian_blue_parrot_no_voltage():
-    parrot = Parrot(ParrotType.NORWEGIAN_BLUE, 0, 0, False)
+    parrot = NorwegianBlue(0, 0, False)
     assert parrot.cry() == "..."
