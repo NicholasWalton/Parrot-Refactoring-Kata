@@ -1,4 +1,4 @@
-from parrot import Parrot, ParrotType
+from parrot import African, Parrot, ParrotType
 
 
 def test_speed_of_european_parrot():
@@ -12,22 +12,22 @@ def test_cry_of_european_parrot():
 
 
 def test_speed_of_african_parrot_with_one_coconut():
-    parrot = Parrot(ParrotType.AFRICAN, 1, 0, False)
+    parrot = African(1, 0, False)
     assert parrot.speed() == 3.0
 
 
 def test_cry_of_african_parrot():
-    parrot = Parrot(ParrotType.AFRICAN, 1, 0, False)
+    parrot = African(1, 0, False)
     assert parrot.cry() == "Sqaark!"
 
 
 def test_speed_of_african_parrot_with_two_coconuts():
-    parrot = Parrot(ParrotType.AFRICAN, 2, 0, False)
+    parrot = African(2, 0, False)
     assert parrot.speed() == 0.0
 
 
 def test_speed_of_african_parrot_with_no_coconuts():
-    parrot = Parrot(ParrotType.AFRICAN, 0, 0, False)
+    parrot = African(0, 0, False)
     assert parrot.speed() == 12.0
 
 

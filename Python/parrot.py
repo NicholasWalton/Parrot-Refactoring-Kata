@@ -41,3 +41,8 @@ class Parrot:
 
     def _base_speed(self):
         return 12.0
+
+
+class African(Parrot):
+    def __init__(self, number_of_coconuts, voltage, nailed):
+        super().__init__(ParrotType.AFRICAN, number_of_coconuts, voltage, nailed)
