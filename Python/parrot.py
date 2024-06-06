@@ -1,15 +1,10 @@
+from abc import ABC, abstractmethod
 from enum import Enum
 
 
-class ParrotType(Enum):
-    EUROPEAN = 1
-    AFRICAN = 2
+class Parrot(ABC):
 
-
-class Parrot:
-
-    def __init__(self, type_of_parrot, number_of_coconuts, voltage, nailed):
-        self._type = type_of_parrot
+    def __init__(self, number_of_coconuts, voltage, nailed):
         self._number_of_coconuts = number_of_coconuts
         self._voltage = voltage
         self._nailed = nailed
@@ -17,15 +12,8 @@ class Parrot:
     def speed(self):
         return self._base_speed()
 
-    def cry(self):
-        match self._type:
-            case ParrotType.EUROPEAN:
-                return "Sqoork!"
-            case ParrotType.AFRICAN:
-                return "Sqaark!"
-
-    def _compute_base_speed_for_voltage(self, voltage):
-        return min([24.0, voltage * self._base_speed()])
+    @abstractmethod
+    def cry(self): pass
 
     def _load_factor(self):
         return 9.0
@@ -36,23 +24,32 @@ class Parrot:
 
 class African(Parrot):
     def __init__(self, number_of_coconuts, voltage, nailed):
-        super().__init__(ParrotType.AFRICAN, number_of_coconuts, voltage, nailed)
+        super().__init__(number_of_coconuts, voltage, nailed)
 
     def speed(self):
         return max(0, self._base_speed() - self._load_factor() * self._number_of_coconuts)
 
+    def cry(self):
+        return "Sqaark!"
 
-class European(Parrot): 
+
+class European(Parrot):
     def __init__(self, number_of_coconuts, voltage, nailed):
-        super().__init__(ParrotType.EUROPEAN, number_of_coconuts, voltage, nailed)
+        super().__init__(number_of_coconuts, voltage, nailed)
+
+    def cry(self):
+        return "Sqoork!"
 
 
 class NorwegianBlue(Parrot):
     def __init__(self, number_of_coconuts, voltage, nailed):
-        super().__init__(ParrotType.NORWEGIAN_BLUE, number_of_coconuts, voltage, nailed)
+        super().__init__(number_of_coconuts, voltage, nailed)
 
     def cry(self):
         return "Bzzzzzz" if self._voltage > 0 else "..."
 
     def speed(self):
         return 0 if self._nailed else self._compute_base_speed_for_voltage(self._voltage)
+
+    def _compute_base_speed_for_voltage(self, voltage):
+        return min([24.0, voltage * self._base_speed()])
