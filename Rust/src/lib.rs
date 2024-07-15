@@ -1,3 +1,4 @@
+#[derive(Default)]
 struct Parrot {
     parrot_type: ParrotType,
     number_of_coconuts: usize,
@@ -11,14 +12,9 @@ enum ParrotType {
     NorwegianBlue,
 }
 
-impl Default for Parrot {
+impl Default for ParrotType {
     fn default() -> Self {
-        Parrot {
-            parrot_type: ParrotType::European,
-            number_of_coconuts: 0,
-            voltage: 0.0,
-            nailed: false
-        }
+        ParrotType::European
     }
 }
 
