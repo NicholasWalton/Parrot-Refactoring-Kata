@@ -6,16 +6,11 @@ struct Parrot {
     nailed: bool,
 }
 
+#[derive(Default)]
 enum ParrotType {
-    European,
+    #[default] European,
     African,
     NorwegianBlue,
-}
-
-impl Default for ParrotType {
-    fn default() -> Self {
-        ParrotType::European
-    }
 }
 
 impl Parrot {
