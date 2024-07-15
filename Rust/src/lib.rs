@@ -1,19 +1,25 @@
-struct Parrot<'a> {
-    parrot_type: &'a str,
+struct Parrot {
+    parrot_type: ParrotType,
     number_of_coconuts: usize,
     voltage: f32,
     nailed: bool,
 }
 
-impl<'a> Parrot<'a> {
+enum ParrotType {
+    European,
+    African,
+    NorwegianBlue,
+}
+
+impl Parrot {
     pub fn speed(&self) -> Result<f32, &'static str> {
         match self.parrot_type {
-            "european_parrot" => Ok(base_speed()),
-            "african_parrot" => {
+            ParrotType::European => Ok(base_speed()),
+            ParrotType::African => {
                 let african_speed = base_speed() - load_factor() * self.number_of_coconuts as f32;
                 if african_speed > 0.0 { Ok(african_speed) } else { Ok(0.0)}
             }
-            "norwegian_blue_parrot" => {
+            ParrotType::NorwegianBlue => {
                 if self.nailed == true {
                     Ok(0.0)
                 }
@@ -21,16 +27,14 @@ impl<'a> Parrot<'a> {
                     Ok(compute_base_speed_for_voltage(self.voltage))
                 }
             }
-            _ => Err("Should be unreachable!")
         }
     }
 
     pub(crate) fn get_cry(&self) -> Result<&str, &'static str> {
         match self.parrot_type {
-            "european_parrot" => Ok("Sqoork!"),
-            "african_parrot" => Ok("Sqaark!"),
-            "norwegian_blue_parrot" => if self.voltage > 0.0 { Ok("Bzzzzzz") } else { Ok("...") },
-            _ => Err("Should be unreachable!")
+            ParrotType::European => Ok("Sqoork!"),
+            ParrotType::African => Ok("Sqaark!"),
+            ParrotType::NorwegianBlue => if self.voltage > 0.0 { Ok("Bzzzzzz") } else { Ok("...") },
         }
     }
 }
@@ -60,7 +64,7 @@ mod tests {
 
     #[test]
     fn european_parrot_speed() {
-        let parrot = Parrot { parrot_type: "european_parrot",
+        let parrot = Parrot { parrot_type: ParrotType::European,
                               number_of_coconuts: 0,
                               voltage: 0.0,
                               nailed: false };
@@ -69,7 +73,7 @@ mod tests {
 
     #[test]
     fn african_parrot_speed_with_one_coconut() {
-        let parrot = Parrot { parrot_type: "african_parrot",
+        let parrot = Parrot { parrot_type: ParrotType::African,
                               number_of_coconuts: 1,
                               voltage: 0.0,
                               nailed: false };
@@ -78,7 +82,7 @@ mod tests {
 
     #[test]
     fn african_parrot_speed_with_two_coconut() {
-        let parrot = Parrot { parrot_type: "african_parrot",
+        let parrot = Parrot { parrot_type: ParrotType::African,
                               number_of_coconuts: 2,
                               voltage: 0.0,
                               nailed: false };
@@ -87,7 +91,7 @@ mod tests {
 
     #[test]
     fn african_parrot_speed_with_no_coconut() {
-        let parrot = Parrot { parrot_type: "african_parrot",
+        let parrot = Parrot { parrot_type: ParrotType::African,
                               number_of_coconuts: 0,
                               voltage: 0.0,
                               nailed: false };
@@ -95,7 +99,7 @@ mod tests {
     }
     #[test]
     fn nailed_norwegian_blue_parrot() {
-        let parrot = Parrot { parrot_type: "norwegian_blue_parrot",
+        let parrot = Parrot { parrot_type: ParrotType::NorwegianBlue,
                               number_of_coconuts: 0,
                               voltage: 1.5,
                               nailed: true };
@@ -103,7 +107,7 @@ mod tests {
     }
     #[test]
     fn not_nailed_norwegian_blue_parrot() {
-        let parrot = Parrot { parrot_type: "norwegian_blue_parrot",
+        let parrot = Parrot { parrot_type: ParrotType::NorwegianBlue,
                               number_of_coconuts: 0,
                               voltage: 1.5,
                               nailed: false };
@@ -111,7 +115,7 @@ mod tests {
     }
     #[test]
     fn not_nailed_norwegian_blue_parrot_with_high_voltage() {
-        let parrot = Parrot { parrot_type: "norwegian_blue_parrot",
+        let parrot = Parrot { parrot_type: ParrotType::NorwegianBlue,
                               number_of_coconuts: 0,
                               voltage: 4.0,
                               nailed: false };
@@ -122,7 +126,7 @@ mod tests {
     fn get_cry_of_european_parrot()
     {
         let parrot = Parrot {
-            parrot_type: "european_parrot",
+            parrot_type: ParrotType::European,
             number_of_coconuts: 0,
             voltage: 0.0,
             nailed: false,
@@ -134,7 +138,7 @@ mod tests {
     fn get_cry_of_african_parrot()
     {
         let parrot = Parrot {
-            parrot_type: "african_parrot",
+            parrot_type: ParrotType::African,
             number_of_coconuts: 0,
             voltage: 0.0,
             nailed: false,
@@ -146,7 +150,7 @@ mod tests {
     fn get_cry_norwegian_blue_parrot_high_voltage()
     {
         let parrot = Parrot {
-            parrot_type: "norwegian_blue_parrot",
+            parrot_type: ParrotType::NorwegianBlue,
             number_of_coconuts: 0,
             voltage: 4.0,
             nailed: false,
@@ -158,7 +162,7 @@ mod tests {
     fn get_cry_norwegian_blue_parrot_no_voltage()
     {
         let parrot = Parrot {
-            parrot_type: "norwegian_blue_parrot",
+            parrot_type: ParrotType::NorwegianBlue,
             number_of_coconuts: 0,
             voltage: 0.0,
             nailed: false,
