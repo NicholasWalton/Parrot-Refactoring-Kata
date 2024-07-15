@@ -11,6 +11,17 @@ enum ParrotType {
     NorwegianBlue,
 }
 
+impl Default for Parrot {
+    fn default() -> Self {
+        Parrot {
+            parrot_type: ParrotType::European,
+            number_of_coconuts: 0,
+            voltage: 0.0,
+            nailed: false
+        }
+    }
+}
+
 impl Parrot {
     pub fn speed(&self) -> Result<f32, &'static str> {
         match self.parrot_type {
@@ -60,14 +71,13 @@ fn base_speed() -> f32 {
 
 #[cfg(test)]
 mod tests {
+    use std::default;
+
     use super::*;
 
     #[test]
     fn european_parrot_speed() {
-        let parrot = Parrot { parrot_type: ParrotType::European,
-                              number_of_coconuts: 0,
-                              voltage: 0.0,
-                              nailed: false };
+        let parrot = Parrot::default();
         assert_eq!(parrot.speed().unwrap(), 12.0);
     }
 
@@ -75,8 +85,8 @@ mod tests {
     fn african_parrot_speed_with_one_coconut() {
         let parrot = Parrot { parrot_type: ParrotType::African,
                               number_of_coconuts: 1,
-                              voltage: 0.0,
-                              nailed: false };
+                              ..Default::default() 
+                            };
         assert_eq!(parrot.speed().unwrap(), 3.0);
     }
 
@@ -84,53 +94,47 @@ mod tests {
     fn african_parrot_speed_with_two_coconut() {
         let parrot = Parrot { parrot_type: ParrotType::African,
                               number_of_coconuts: 2,
-                              voltage: 0.0,
-                              nailed: false };
+                              ..Default::default()
+                            };
         assert_eq!(parrot.speed().unwrap(), 0.0);
     }
 
     #[test]
     fn african_parrot_speed_with_no_coconut() {
         let parrot = Parrot { parrot_type: ParrotType::African,
-                              number_of_coconuts: 0,
-                              voltage: 0.0,
-                              nailed: false };
+                              ..Default::default()
+                            };
         assert_eq!(parrot.speed().unwrap(), 12.0);
     }
     #[test]
     fn nailed_norwegian_blue_parrot() {
         let parrot = Parrot { parrot_type: ParrotType::NorwegianBlue,
-                              number_of_coconuts: 0,
                               voltage: 1.5,
-                              nailed: true };
+                              nailed: true,
+                            ..Default::default()
+                        };
         assert_eq!(parrot.speed().unwrap(), 0.0);
     }
     #[test]
     fn not_nailed_norwegian_blue_parrot() {
         let parrot = Parrot { parrot_type: ParrotType::NorwegianBlue,
-                              number_of_coconuts: 0,
                               voltage: 1.5,
-                              nailed: false };
+                              ..Default::default()
+                            };
         assert_eq!(parrot.speed().unwrap(), 18.0);
     }
     #[test]
     fn not_nailed_norwegian_blue_parrot_with_high_voltage() {
         let parrot = Parrot { parrot_type: ParrotType::NorwegianBlue,
-                              number_of_coconuts: 0,
                               voltage: 4.0,
-                              nailed: false };
+                            ..Default::default() };
         assert_eq!(parrot.speed().unwrap(), 24.0);
     }
 
     #[test]
     fn get_cry_of_european_parrot()
     {
-        let parrot = Parrot {
-            parrot_type: ParrotType::European,
-            number_of_coconuts: 0,
-            voltage: 0.0,
-            nailed: false,
-        };
+        let parrot = Parrot::default();
         assert_eq!(parrot.get_cry().unwrap(), "Sqoork!");
     }
 
@@ -139,9 +143,7 @@ mod tests {
     {
         let parrot = Parrot {
             parrot_type: ParrotType::African,
-            number_of_coconuts: 0,
-            voltage: 0.0,
-            nailed: false,
+            ..Default::default()
         };
         assert_eq!(parrot.get_cry().unwrap(), "Sqaark!");
     }
@@ -151,9 +153,8 @@ mod tests {
     {
         let parrot = Parrot {
             parrot_type: ParrotType::NorwegianBlue,
-            number_of_coconuts: 0,
             voltage: 4.0,
-            nailed: false,
+            ..Default::default()
         };
         assert_eq!(parrot.get_cry().unwrap(), "Bzzzzzz");
     }
@@ -163,9 +164,7 @@ mod tests {
     {
         let parrot = Parrot {
             parrot_type: ParrotType::NorwegianBlue,
-            number_of_coconuts: 0,
-            voltage: 0.0,
-            nailed: false,
+            ..Default::default()
         };
         assert_eq!(parrot.get_cry().unwrap(), "...");
     }
