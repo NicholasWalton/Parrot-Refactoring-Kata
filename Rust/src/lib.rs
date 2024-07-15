@@ -1,8 +1,6 @@
 #[derive(Default)]
 struct Parrot {
     parrot_type: ParrotType,
-    voltage: f32,
-    nailed: bool,
 }
 
 #[derive(Default)]
@@ -12,7 +10,10 @@ enum ParrotType {
     African {
         number_of_coconuts: usize,
     },
-    NorwegianBlue,
+    NorwegianBlue {
+        voltage: f32,
+        nailed: bool,
+    },
 }
 
 impl Parrot {
@@ -27,11 +28,11 @@ impl Parrot {
                     Ok(0.0)
                 }
             }
-            ParrotType::NorwegianBlue => {
-                if self.nailed == true {
+            ParrotType::NorwegianBlue { nailed, voltage } => {
+                if nailed == true {
                     Ok(0.0)
                 } else {
-                    Ok(compute_base_speed_for_voltage(self.voltage))
+                    Ok(compute_base_speed_for_voltage(voltage))
                 }
             }
         }
@@ -41,8 +42,8 @@ impl Parrot {
         match self.parrot_type {
             ParrotType::European => Ok("Sqoork!"),
             ParrotType::African { .. } => Ok("Sqaark!"),
-            ParrotType::NorwegianBlue => {
-                if self.voltage > 0.0 {
+            ParrotType::NorwegianBlue { voltage, .. } => {
+                if voltage > 0.0 {
                     Ok("Bzzzzzz")
                 } else {
                     Ok("...")
@@ -117,9 +118,10 @@ mod tests {
     #[test]
     fn nailed_norwegian_blue_parrot() {
         let parrot = Parrot {
-            parrot_type: ParrotType::NorwegianBlue,
-            voltage: 1.5,
-            nailed: true,
+            parrot_type: ParrotType::NorwegianBlue {
+                voltage: 1.5,
+                nailed: true,
+            },
             ..Default::default()
         };
         assert_eq!(parrot.speed().unwrap(), 0.0);
@@ -127,8 +129,10 @@ mod tests {
     #[test]
     fn not_nailed_norwegian_blue_parrot() {
         let parrot = Parrot {
-            parrot_type: ParrotType::NorwegianBlue,
-            voltage: 1.5,
+            parrot_type: ParrotType::NorwegianBlue {
+                voltage: 1.5,
+                nailed: false,
+            },
             ..Default::default()
         };
         assert_eq!(parrot.speed().unwrap(), 18.0);
@@ -136,8 +140,10 @@ mod tests {
     #[test]
     fn not_nailed_norwegian_blue_parrot_with_high_voltage() {
         let parrot = Parrot {
-            parrot_type: ParrotType::NorwegianBlue,
-            voltage: 4.0,
+            parrot_type: ParrotType::NorwegianBlue {
+                voltage: 4.0,
+                nailed: false,
+            },
             ..Default::default()
         };
         assert_eq!(parrot.speed().unwrap(), 24.0);
@@ -163,8 +169,10 @@ mod tests {
     #[test]
     fn get_cry_norwegian_blue_parrot_high_voltage() {
         let parrot = Parrot {
-            parrot_type: ParrotType::NorwegianBlue,
-            voltage: 4.0,
+            parrot_type: ParrotType::NorwegianBlue {
+                voltage: 4.0,
+                nailed: false,
+            },
             ..Default::default()
         };
         assert_eq!(parrot.get_cry().unwrap(), "Bzzzzzz");
@@ -173,7 +181,10 @@ mod tests {
     #[test]
     fn get_cry_norwegian_blue_parrot_no_voltage() {
         let parrot = Parrot {
-            parrot_type: ParrotType::NorwegianBlue,
+            parrot_type: ParrotType::NorwegianBlue {
+                voltage: 0.0,
+                nailed: false,
+            },
             ..Default::default()
         };
         assert_eq!(parrot.get_cry().unwrap(), "...");
