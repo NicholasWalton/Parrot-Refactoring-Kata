@@ -1,15 +1,17 @@
 #[derive(Default)]
 struct Parrot {
     parrot_type: ParrotType,
-    number_of_coconuts: usize,
     voltage: f32,
     nailed: bool,
 }
 
 #[derive(Default)]
 enum ParrotType {
-    #[default] European,
-    African,
+    #[default]
+    European,
+    African {
+        number_of_coconuts: usize,
+    },
     NorwegianBlue,
 }
 
@@ -17,8 +19,8 @@ impl Parrot {
     pub fn speed(&self) -> Result<f32, &'static str> {
         match self.parrot_type {
             ParrotType::European => Ok(base_speed()),
-            ParrotType::African => {
-                let african_speed = base_speed() - load_factor() * self.number_of_coconuts as f32;
+            ParrotType::African { number_of_coconuts } => {
+                let african_speed = base_speed() - load_factor() * number_of_coconuts as f32;
                 if african_speed > 0.0 {
                     Ok(african_speed)
                 } else {
@@ -38,7 +40,7 @@ impl Parrot {
     pub(crate) fn get_cry(&self) -> Result<&str, &'static str> {
         match self.parrot_type {
             ParrotType::European => Ok("Sqoork!"),
-            ParrotType::African => Ok("Sqaark!"),
+            ParrotType::African { .. } => Ok("Sqaark!"),
             ParrotType::NorwegianBlue => {
                 if self.voltage > 0.0 {
                     Ok("Bzzzzzz")
@@ -83,8 +85,9 @@ mod tests {
     #[test]
     fn african_parrot_speed_with_one_coconut() {
         let parrot = Parrot {
-            parrot_type: ParrotType::African,
-            number_of_coconuts: 1,
+            parrot_type: ParrotType::African {
+                number_of_coconuts: 1,
+            },
             ..Default::default()
         };
         assert_eq!(parrot.speed().unwrap(), 3.0);
@@ -93,8 +96,9 @@ mod tests {
     #[test]
     fn african_parrot_speed_with_two_coconut() {
         let parrot = Parrot {
-            parrot_type: ParrotType::African,
-            number_of_coconuts: 2,
+            parrot_type: ParrotType::African {
+                number_of_coconuts: 2,
+            },
             ..Default::default()
         };
         assert_eq!(parrot.speed().unwrap(), 0.0);
@@ -103,7 +107,9 @@ mod tests {
     #[test]
     fn african_parrot_speed_with_no_coconut() {
         let parrot = Parrot {
-            parrot_type: ParrotType::African,
+            parrot_type: ParrotType::African {
+                number_of_coconuts: 0,
+            },
             ..Default::default()
         };
         assert_eq!(parrot.speed().unwrap(), 12.0);
@@ -146,7 +152,9 @@ mod tests {
     #[test]
     fn get_cry_of_african_parrot() {
         let parrot = Parrot {
-            parrot_type: ParrotType::African,
+            parrot_type: ParrotType::African {
+                number_of_coconuts: 0,
+            },
             ..Default::default()
         };
         assert_eq!(parrot.get_cry().unwrap(), "Sqaark!");
