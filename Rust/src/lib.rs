@@ -1,4 +1,4 @@
-enum ParrotType {
+enum Parrot {
     European,
     African {
         number_of_coconuts: usize,
@@ -9,11 +9,11 @@ enum ParrotType {
     },
 }
 
-impl ParrotType {
+impl Parrot {
     pub fn speed(&self) -> Result<f32, &'static str> {
         match self {
-            ParrotType::European => Ok(base_speed()),
-            ParrotType::African { number_of_coconuts } => {
+            Parrot::European => Ok(base_speed()),
+            Parrot::African { number_of_coconuts } => {
                 let african_speed = base_speed() - load_factor() * *number_of_coconuts as f32;
                 if african_speed > 0.0 {
                     Ok(african_speed)
@@ -21,7 +21,7 @@ impl ParrotType {
                     Ok(0.0)
                 }
             }
-            ParrotType::NorwegianBlue { nailed, voltage } => {
+            Parrot::NorwegianBlue { nailed, voltage } => {
                 if *nailed == true {
                     Ok(0.0)
                 } else {
@@ -33,9 +33,9 @@ impl ParrotType {
 
     pub(crate) fn get_cry(&self) -> Result<&str, &'static str> {
         match self {
-            ParrotType::European => Ok("Sqoork!"),
-            ParrotType::African { .. } => Ok("Sqaark!"),
-            ParrotType::NorwegianBlue { voltage, .. } => {
+            Parrot::European => Ok("Sqoork!"),
+            Parrot::African { .. } => Ok("Sqaark!"),
+            Parrot::NorwegianBlue { voltage, .. } => {
                 if *voltage > 0.0 {
                     Ok("Bzzzzzz")
                 } else {
@@ -72,13 +72,13 @@ mod tests {
 
     #[test]
     fn european_parrot_speed() {
-        let parrot = ParrotType::European;
+        let parrot = Parrot::European;
         assert_eq!(parrot.speed().unwrap(), 12.0);
     }
 
     #[test]
     fn african_parrot_speed_with_one_coconut() {
-        let parrot = ParrotType::African {
+        let parrot = Parrot::African {
                 number_of_coconuts: 1,
             };
         assert_eq!(parrot.speed().unwrap(), 3.0);
@@ -86,7 +86,7 @@ mod tests {
 
     #[test]
     fn african_parrot_speed_with_two_coconut() {
-        let parrot = ParrotType::African {
+        let parrot = Parrot::African {
                 number_of_coconuts: 2,
             };
         assert_eq!(parrot.speed().unwrap(), 0.0);
@@ -94,14 +94,14 @@ mod tests {
 
     #[test]
     fn african_parrot_speed_with_no_coconut() {
-        let parrot =ParrotType::African {
+        let parrot =Parrot::African {
                 number_of_coconuts: 0,
             };
         assert_eq!(parrot.speed().unwrap(), 12.0);
     }
     #[test]
     fn nailed_norwegian_blue_parrot() {
-        let parrot = ParrotType::NorwegianBlue {
+        let parrot = Parrot::NorwegianBlue {
                 voltage: 1.5,
                 nailed: true,
             };
@@ -109,7 +109,7 @@ mod tests {
     }
     #[test]
     fn not_nailed_norwegian_blue_parrot() {
-        let parrot = ParrotType::NorwegianBlue {
+        let parrot = Parrot::NorwegianBlue {
                 voltage: 1.5,
                 nailed: false,
             };
@@ -117,7 +117,7 @@ mod tests {
     }
     #[test]
     fn not_nailed_norwegian_blue_parrot_with_high_voltage() {
-        let parrot = ParrotType::NorwegianBlue {
+        let parrot = Parrot::NorwegianBlue {
                 voltage: 4.0,
                 nailed: false,
             };
@@ -126,13 +126,13 @@ mod tests {
 
     #[test]
     fn get_cry_of_european_parrot() {
-        let parrot = ParrotType::European;
+        let parrot = Parrot::European;
         assert_eq!(parrot.get_cry().unwrap(), "Sqoork!");
     }
 
     #[test]
     fn get_cry_of_african_parrot() {
-        let parrot = ParrotType::African {
+        let parrot = Parrot::African {
                 number_of_coconuts: 0,
             };
         assert_eq!(parrot.get_cry().unwrap(), "Sqaark!");
@@ -140,7 +140,7 @@ mod tests {
 
     #[test]
     fn get_cry_norwegian_blue_parrot_high_voltage() {
-        let parrot = ParrotType::NorwegianBlue {
+        let parrot = Parrot::NorwegianBlue {
                 voltage: 4.0,
                 nailed: false,
             };
@@ -149,7 +149,7 @@ mod tests {
 
     #[test]
     fn get_cry_norwegian_blue_parrot_no_voltage() {
-        let parrot = ParrotType::NorwegianBlue {
+        let parrot = Parrot::NorwegianBlue {
                 voltage: 0.0,
                 nailed: false,
             };
